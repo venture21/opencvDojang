@@ -5,7 +5,7 @@ import cv2, sys
 
 fileName = 'data/vtest.avi'
 
-# 동영상 파일 열기
+# VideoCapture 클래스 객체 생성 + 생성자가 호출(파일열기)
 cap = cv2.VideoCapture(fileName)
 
 # 동영상의 해상도 width, height 확인
@@ -16,12 +16,15 @@ print(frameSize)
 # 동영상 이미지를 다 가져올때까지 반복
 while(True):
     # 동영상에서 한장의 이미지를 가져오기
-    # retval : 동영상에서 이미지 가져올때 정상 동작 했나?  
+    # retval : 동영상에서 이미지 가져올때 정상 동작 했나? True, False 
     # frame은 이미지 한장 
     # 동영상 코덱 디코딩도 포함
     retval, frame = cap.read()
     # retval가 양수가 아니면 while문 빠져나가기(종료)
+
+    # False인 경우 if문이 실행
     if not retval:
+        print(retval)
         break
     cv2.imshow('frame', frame)
     
