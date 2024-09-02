@@ -15,7 +15,7 @@ if img_gray is None or img_bgr is None:
     sys.exit()
 
 # 창의 이름을 정의
-cv2.namedWindow('image_gray')
+cv2.namedWindow('image_gray',cv2.WINDOW_GUI_EXPANDED)
 cv2.namedWindow('image_bgr')
 # 불러온 이미지를 창에 띄워준다.
 # 'image'창에 읽어온 img 배열을 출력한다.
