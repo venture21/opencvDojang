@@ -2,10 +2,21 @@ import cv2
 import threading
 import time
 
+
+recording = True
+rec_length = 60  # 녹화 시간 (초)
+
+
 # 1분 타이머 스레드 함수
 def timer_thread(stop_event):
     global recording
-    time.sleep(60)  # 60초 (1분) 대기
+    loop  = rec_length
+    while(recording):
+        time.sleep(1)  # 60초 (1분) 대기
+        loop-=1
+        if loop==0:
+            break
+    
     stop_event.set()  # 이벤트 설정 (녹화 중지)
 
 # 녹화 중지 이벤트 생성
@@ -16,7 +27,7 @@ timer = threading.Thread(target=timer_thread, args=(stop_recording,))
 timer.start()
 
 # 웹캠 캡처 객체 생성
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 # 녹화 설정
 fourcc = cv2.VideoWriter_fourcc(*'XVID')  # 코덱 설정
@@ -30,7 +41,7 @@ print(fps)
 out = cv2.VideoWriter('output.avi', fourcc, fps, (width, height))  # 출력 파일 설정
 
 # 녹화 시작
-recording = True
+
 while recording:
     ret, frame = cap.read()  # 프레임 읽기
     if ret:
