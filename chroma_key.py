@@ -2,17 +2,19 @@ import sys
 import numpy as np
 import cv2
 
+hmin=50
+hmax=70
 
 # 트랙바 콜백 함수 생성
 def on_trackbar(pos):
-    global hsv
+    global hmin, hmax
     hmin = cv2.getTrackbarPos('H_min', 'frame')
     hmax = cv2.getTrackbarPos('H_max', 'frame')
     
     # inRange함수에 적용
-    mask = cv2.inRange(hsv,(hmin,150,0),(hmax,255,255))
-    cv2.copyTo(frame2, mask, frame1)
-    cv2.imshow('frame', frame1)
+    #mask = cv2.inRange(hsv,(hmin,150,0),(hmax,255,255))
+    #cv2.copyTo(frame2, mask, frame1)
+    #cv2.imshow('frame', frame1)
 
 # 동영상 파일명
 fileName1 = "data2/woman.mp4"
@@ -67,7 +69,7 @@ while True:
         # hsv 색공간에서 영역을 검출해서 합성
         hsv = cv2.cvtColor(frame1, cv2.COLOR_BGR2HSV)
         # h: 50~70, s:150~255, v:0~255
-        mask = cv2.inRange(hsv,(50,150,0),(70,255,255))
+        mask = cv2.inRange(hsv,(hmin,150,0),(hmax,255,255))
         cv2.copyTo(frame2, mask, frame1)
     
     # 결과 확인
