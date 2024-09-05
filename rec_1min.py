@@ -58,6 +58,7 @@ while recording:
         recording = False
 
 # 녹화 종료
+timer.join()
 cap.release()
 out.release()
 cv2.destroyAllWindows()
