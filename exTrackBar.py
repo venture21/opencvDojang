@@ -9,10 +9,45 @@ def on_trackbar(pos):
     hmax = cv2.getTrackbarPos('H_max', 'Trackbar')
     
     # inRange함수에 적용
-    dst = cv2.inRange(src_hsv, (hmin,150,0), (hmax,255,255))
+    dst = cv2.inRange(src_hsv, (hmin,100,0), (hmax,255,255))
     cv2.imshow('Trackbar', dst)
+    
+    # # red검출 inRange
+    # mask_red1 = cv2.inRange(src_hsv,(0,100,0), (10,255,255))
+    # mask_red2 = cv2.inRange(src_hsv,(160,100,0), (180,255,255))
+    # mask_red = cv2.bitwise_or(mask_red1, mask_red2)
+    # #yellow검출 inRange
+    # mask_yellow = cv2.inRange(src_hsv,(15,100,0), (35,255,255))
 
-src = cv2.imread('data2/candies.png')
+    # #green검출 inRange
+    # mask_green = cv2.inRange(src_hsv,(50,100,0), (75,255,255))
+    # green_pixels = cv2.countNonZero(mask_green)
+    # red_pixels = cv2.countNonZero(mask_red2)
+    # yellow_pixels = cv2.countNonZero(mask_yellow)
+    # print("g_count : ", green_pixels)
+    # print("r_count : ", red_pixels)
+    # print("y_count : ", yellow_pixels)
+    
+    # # 딕셔너리를 사용하여 색상과 픽셀 수 연결
+    # color_pixels = {
+    #     "red": red_pixels,
+    #     "yellow": yellow_pixels,
+    #     "green": green_pixels,
+    # }
+
+    # # 가장 많은 픽셀 수를 가진 색상 찾기
+    # max_color = max(color_pixels, key=color_pixels.get)
+
+    # # 결과 출력
+    # print(max_color)
+    #     
+
+#fileName = 'data2/candies.png'
+fileName = 'data2/red.jpg'
+#fileName = 'data2/green.jpg'
+#fileName = 'data2/yellow.jpg'
+
+src = cv2.imread(fileName)
 
 if src is None:
     sys.exit("Image Load failed!")
@@ -22,7 +57,8 @@ src_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
 
 # 창에 트랙바를 넣기 위해서는 창을 먼저 생성
 cv2.namedWindow('Trackbar')
-cv2.imshow('Trackbar', src)
+
+cv2.imshow('Trackbar', src_hsv)
 
 # 트랙바 생성 : 'H_min' 트랙바의 이름, 범위 0~255,  
 # on_trackbar : 트랙바를 움직일때 호출되는 함수(콜백함수)

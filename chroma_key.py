@@ -96,10 +96,3 @@ while True:
 cap1.release()
 cap2.release()
 cv2.destroyAllWindows()
-    
-
-
-
-    
-
-
