@@ -2,6 +2,18 @@ import sys
 import numpy as np
 import cv2
 
+
+# 트랙바 콜백 함수 생성
+def on_trackbar(pos):
+    global hsv
+    hmin = cv2.getTrackbarPos('H_min', 'frame')
+    hmax = cv2.getTrackbarPos('H_max', 'frame')
+    
+    # inRange함수에 적용
+    mask = cv2.inRange(hsv,(hmin,150,0),(hmax,255,255))
+    cv2.copyTo(frame2, mask, frame1)
+    cv2.imshow('frame', frame1)
+
 # 동영상 파일명
 fileName1 = "data2/woman.mp4"
 fileName2 = "data2/raining.mp4"
@@ -30,6 +42,17 @@ delay = int(1000/fps1)
 
 # 합성 여부 설정 플래그
 do_composite = False
+
+# 창을 먼저 생성, 트랙바 추가
+cv2.namedWindow('frame')
+
+# H_min : 40~60
+cv2.createTrackbar('H_min', 'frame', 40, 60, on_trackbar)
+cv2.createTrackbar('H_max', 'frame', 60, 80, on_trackbar)
+#on_trackbar(0)
+
+ret1, frame1 = cap1.read()
+hsv = cv2.cvtColor(frame1, cv2.COLOR_BGR2HSV)
 
 while True:
     ret1, frame1 = cap1.read()
