@@ -22,7 +22,7 @@ def on_trackbar(pos):
     #green검출 inRange
     mask_green = cv2.inRange(src_hsv,(50,100,0), (75,255,255))
     green_pixels = cv2.countNonZero(mask_green)
-    red_pixels = cv2.countNonZero(mask_red2)
+    red_pixels = cv2.countNonZero(mask_red)
     yellow_pixels = cv2.countNonZero(mask_yellow)
     print("g_count : ", green_pixels)
     print("r_count : ", red_pixels)
