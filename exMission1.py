@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 이미지 불러오기
-src = cv2.imread('mission/01.png')
+src = cv2.imread('mission/05.png')
 
 if src is None:
     sys.exit('Image load failed')
@@ -32,7 +32,7 @@ Y,Cb,Cr = cv2.split(src_Ycbcr)
 # src_Ycbcr에 normalize적용
 #Y_norm = cv2.normalize(Y,None, 0, 255, cv2.NORM_MINMAX)
 #Y_equalize = cv2.equalizeHist(Y)
-Y_add = cv2.add(Y, 50)
+Y_add = cv2.add(Y, 5)
 
 hist2 = cv2.calcHist([Y_add], [0], None, [256], [0,256])
 plt.plot(hist2)
@@ -41,6 +41,7 @@ plt.show()
 #Y_equalize, cb,cr 채널 합치기
 src_Ycbcr_add = cv2.merge((Y_add,Cb,Cr))
 src_add = cv2.cvtColor(src_Ycbcr_add, cv2.COLOR_YCrCb2BGR)
+cv2.imshow('src',src)
 cv2.imshow('src_equalize', src_add)
 cv2.waitKey()
 cv2.destroyAllWindows()
