@@ -10,7 +10,9 @@ pt1 = (0,0)
 pt2 = (0,0)
 
 def mouse_callback(event, x, y, flags, param):
-    global img, pt1, pt2
+    #global img, 
+    img = param[0]
+    global pt1, pt2
     
     if event==cv2.EVENT_LBUTTONDOWN:
         pt1 = (x,y)
