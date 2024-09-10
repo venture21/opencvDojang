@@ -13,7 +13,6 @@ kernel = (kernel_size, kernel_size)
 # 필터의 크기가  (3x3)
 dst = cv2.blur(src, kernel = kernel)
 
-
 cv2.imshow('src',src)
 cv2.imshow('dst',dst)
 cv2.waitKey()
