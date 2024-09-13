@@ -22,34 +22,105 @@
 # 8. 데이터셋을 teachable machine사이트에 올려서 테스트
 # 9. 인식이 잘 안되는 케이스를 분석하고 케이스 추가 1~8에서 구현된 기능을 이용
 
+# 함수 스타일로 코딩
 import cv2, sys
 import numpy as np
 import os
+from glob import glob
+import shutil
 from enum import Enum
-        
+
+# 클래스에 내장될 기능을 번호로 설정
+class funcNum(Enum):
+    resize = 1
+    rotate = 2
+    hflip  = 3
+    vflip  = 4
+    crop   = 5
 
 dataPath = os.path.join(os.getcwd(), 'DataAug')
 dataOrg = os.path.join(dataPath, 'org')
-fileName = os.path.join(dataOrg,'carKey_white.jpg')
 
-img = cv2.imread(fileName)
+#전역 변수 
+DEBUG = False
+dsize = (224,224)
 
-dsize = (224,224)  
-# 스마트폰으로 촬영된 이미지를 224x224로 변경
-# Resize시에는 interpolation을 무엇으로 할 지도 중요
-img_resize = cv2.resize(img, dsize, interpolation=cv2.INTER_AREA)
-
-rotate_interval = 20
-
-for angle in range(20,360, rotate_interval):
-    img_rotate = rotate(img_resize, angle)
+# input  : dataPath
+# output : dataPath안에 jpg파일의 리스트를 가져오기
+# 확장하려면  기능추가 : img_type = ['jpg','png','gif']
+def getFileList(dataPath):
+    fileNames = glob(os.path.join(dataPath,'*.jpg'))
+    if DEBUG:
+        print(fileNames)
+        
+    if fileNames is None:
+        print("fileList is empty!")
+        
+    return fileNames
     
-    cv2.imwrite()
+
+# 이미지를 불러오는 함수
+def readImg(image_path):
+    img = cv2.imread(image_path)
+    
+    if img is None:
+        sys.exit("Image Load Failed!")
+    return img
+
+# input  : 원본 파일명
+# output : 새로생성될 파일명
+def getFileName(imgName,func):
+    if func==funcNum.resize:
+        # 경로를 제외한 파일명만 올려낸다.
+        baseName = os.path.basename(imgName)
+        # 확장자만 분리
+        baseNameSplit = os.path.splitext(baseName)[0]
+        resizeName = baseNameSplit + '_resize_' + str(dsize[0]) + '.jpg'
+        return resizeName
+
+def resize(img=None, dsize=dsize,imgName=None):
+    if img is None:
+        print("image Path is None")
+    
+    dst = cv2.resize(img, dsize, interpolation=cv2.INTER_AREA)
+    # 새로 만들 파일명 가져오기
+    resizeName = getFileName(imgName, funcNum.resize)
+    cv2.imwrite(resizeName,dst)
+    return dst
+
+
+classList = ['airPod','whitePen','blackPen','CarKey']
+
+def createFolder():
+    for classname in classList:
+        # 기존에 폴더가 있으면 삭제하고, 새로 생성
+        # 폴더안에 파일이 존재하더라도, 파일과 폴더를 모두 삭제
+        classPath = os.path.join(dataPath,classname)
+        print(classPath)
+        # 폴더가 존재한다면
+        if os.path.isdir(classPath):
+            shutil.rmtree(classPath)
+        os.makedirs(classPath,exist_ok=True)
+
+
+def main():
+    
+    createFolder()
+    fileNames = getFileList(dataOrg)
+    print(len(fileNames))
+    for fileName in fileNames:
+        img = readImg(fileName)
+        dst = resize(img,dsize,fileName)
+        cv2.imshow('img',dst)
+        cv2.waitKey()
+        break
+    
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
+    
 
 
 
-cv2.imshow('resize',img_resize)
-cv2.imwrite('test.jpg',img_resize)
-cv2.waitKey()
-cv2.destroyAllWindows()
 
