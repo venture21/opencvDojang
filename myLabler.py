@@ -36,7 +36,6 @@ def drawROI(img, corners):
     disp = cv2.addWeighted(img,0.3,cpy,0.7,0)
     return disp
 
-
 #  마우스 콜백 함수 정의
 def onMouse(event, x, y, flags, param):
     global startPt, img, ptList, cpy, txtWrData, boxList
@@ -59,7 +58,6 @@ def onMouse(event, x, y, flags, param):
             boxList.pop()
             cv2.imshow('label',cpy)
 
-
 ptList=[]
 startPt=None
 cpy=[]
@@ -67,7 +65,6 @@ txtWrData = ""
 boxList=[]
 
 fileNames = getImageList()
-
 
 img = cv2.imread(fileNames[0])
 
